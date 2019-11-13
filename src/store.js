@@ -15,7 +15,7 @@ export default new Vuex.Store({
     login({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        axios.post({ url: 'https://tejiriback.herokuapp.com/users/login', data: user })
+        axios.post({ url: 'https://tejiriback.herokuapp.com/users/login', data: user, method: 'POST' })
           .then(res => {
             const token = res.data.token
             const user = res.data.user
@@ -36,7 +36,7 @@ export default new Vuex.Store({
       // eslint-disable-next-line
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        axios.post({ url: 'https://tejiriback.herokuapp.com/users/register', data: user})
+        axios({ url: 'https://tejiriback.herokuapp.com/users/register', data: user, method: 'POST'})
           .then(res => {
             const token = res.data.token
             const user = res.data.user
@@ -54,6 +54,7 @@ export default new Vuex.Store({
       })
     },
     logout({ commit }) {
+     /* eslint-disable */
       return new Promise((resolve, reject) => {
         commit('logout')
         localStorage.removeItem('token')

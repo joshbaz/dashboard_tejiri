@@ -2,7 +2,7 @@
 <div class="main">
   <Header></Header>
     <div class="form"> 
-        <v-form ref="loginForm" @submit.prevent="login">
+        <form @submit.prevent="login">
           <h1 class="ma-3">Log in to Dashboard</h1>
           <div>
           <v-text-field 
@@ -12,9 +12,6 @@
           dense 
           placeholder="you@domain.com"
           required
-           v-validate="'required|email'"
-          data-vv-name="email"
-          :error-messages="errors.collect('email')"
           ></v-text-field>
         </div>
             <div>
@@ -25,15 +22,12 @@
           dense 
           placeholder="password"
           required
-          data-vv-name="password"
-          v-validate="'required|max:8'"
-          :error-messages="errors.collect('password')"
           ></v-text-field>
         </div>
           <div>
-            <v-btn depressed class="btn" type="submit">Continue</v-btn>
+            <v-btn depressed class="btn" @click="submit">Continue</v-btn>
           </div>
-        </v-form>
+        </form>
     </div>
   <Footer></Footer>
   
@@ -46,45 +40,32 @@ import Header from '../components/header.vue'
 import Footer from '../components/footer.vue'
 
 export default {
-
-    $_veeValidate: {
-      validator: 'new',
-    },
   components: {
     Header,
     Footer
   },
 
-  data: () => ({
+  data() {
+    return {
     email: '',
     password:'',
-    dictionary: {
-        attributes: {
-          email: 'E-mail Address',
-          // custom attributes
-        },
-        custom: {
-           password: {
-            required: () => 'Password can not be empty',
-            max: 'This field may not be greater than 10 characters',
-            // custom messages
-          },
-        },
-      }
-  }),
+    }
+  },
+  
   methods: {
-    /* eslint-disable */
-  login: function() {
-       this.$validator.validateAll()
-           let email = this.email;
-            let password = this.password;
-            this.$store
-              .dispatch("login", { email, password })
-              .then(() => {this.$router.push("/overview")})
-              .catch(err => {
-                console.log(err)
-                });
-   }
+  /* login: function() {
+        let email = this.email;
+        let password = this.password;
+        this.$store
+          .dispatch("login", { email, password })
+          .then(() => 
+          {
+            this.$router.push("/overview")
+          }).catch(err => {
+        console.log(err)
+      });
+   } */
+
  },
 }
 </script>

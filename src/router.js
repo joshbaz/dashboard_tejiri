@@ -1,17 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-//import store from './store/store'
+import store from './store'
 
 import main from './views/main.vue'
 import login from './views/login.vue'
 import signup from './views/signup.vue'
 import register from './views/register.vue'
+import overview from './views/overview.vue'
 
 Vue.use(Router)
 
 let router = new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
@@ -36,7 +36,7 @@ let router = new Router({
     {
       path: '/overview',
       name: 'overview',
-      component: () => import('./views/overview.vue'),
+      component: overview,
       meta: {
         requiresAuth: true
       } 
@@ -44,24 +44,19 @@ let router = new Router({
     {
       path: '/media',
       name: 'media',
-      component: () => import('./views/media.vue'),
-      meta: {
-        requiresAuth: true
-      } 
+      component: () => import('./views/media.vue'), 
     },
     {
       path: '/activities',
       name: 'activities',
       component: () => import('./views/activities.vue'),
-      meta: {
-        requiresAuth: true
-      } 
+
     }
   ]
 })
 
 
-/* router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (store.getters.isLoggedIn) {
       next()
@@ -71,6 +66,6 @@ let router = new Router({
   } else {
     next()
   }
-}) */
+})
 
   export default router
