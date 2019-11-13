@@ -2,7 +2,7 @@
 <div class="main">
   <Header></Header>
     <div class="form"> 
-        <v-form ref="loginForm">
+        <v-form ref="loginForm" @submit.prevent="login">
           <h1 class="ma-3">Log in to Dashboard</h1>
           <div>
           <v-text-field 
@@ -12,6 +12,9 @@
           dense 
           placeholder="you@domain.com"
           required
+           v-validate="'required|email'"
+          data-vv-name="email"
+          :error-messages="errors.collect('email')"
           ></v-text-field>
         </div>
             <div>
@@ -22,10 +25,13 @@
           dense 
           placeholder="password"
           required
+          data-vv-name="password"
+          v-validate="'required|max:8'"
+          :error-messages="errors.collect('password')"
           ></v-text-field>
         </div>
           <div>
-            <v-btn depressed class="btn" @click="submit">Continue</v-btn>
+            <v-btn depressed class="btn" type="submit">Continue</v-btn>
           </div>
         </v-form>
     </div>
@@ -38,10 +44,12 @@
 <script>
 import Header from '../components/header.vue'
 import Footer from '../components/footer.vue'
-import axios from 'axios'
-let BASE_URL = 'http://localhost:4000'
 
 export default {
+
+    $_veeValidate: {
+      validator: 'new',
+    },
   components: {
     Header,
     Footer
@@ -49,30 +57,33 @@ export default {
 
   data: () => ({
     email: '',
-    password:''
+    password:'',
+    dictionary: {
+        attributes: {
+          email: 'E-mail Address',
+          // custom attributes
+        },
+        custom: {
+           password: {
+            required: () => 'Password can not be empty',
+            max: 'This field may not be greater than 10 characters',
+            // custom messages
+          },
+        },
+      }
   }),
   methods: {
-  submit () {
-      axios.post(BASE_URL + '/users/login', {
-        email: this.email,
-        password: this.password
-     }).then (res => {
-       
-      /*  localStorage.setItem('userToken', JSON.stringify(res.data.userToken))
-       localStorage.setItem('token', res.data.token)
-
-       if (localStorage.getItem('token') != null) {
-         this.$emit('login')
-            if(this.$route.params.nextURL != null){
-              this.$router.push(this.$route.params.nextURL)
-           } else {
-            this.$router.push('/overview')  
-           }
-       } */
-     }).catch(err => {
-       console.log("Not posted")
-       console.log(err)
-     }) 
+    /* eslint-disable */
+  login: function() {
+       this.$validator.validateAll()
+           let email = this.email;
+            let password = this.password;
+            this.$store
+              .dispatch("login", { email, password })
+              .then(() => {this.$router.push("/overview")})
+              .catch(err => {
+                console.log(err)
+                });
    }
  },
 }

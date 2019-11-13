@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+//import store from './store/store'
 
 import main from './views/main.vue'
 import login from './views/login.vue'
@@ -16,40 +17,28 @@ let router = new Router({
       path: '/',
       name: 'home',
       component: main,
-      meta: {
-        guest: true
-      }
     },
     {
       path: '/login',
       name: 'login',
-      component: login,
-      meta: {
-        guest: true
-      }    
+      component: login,   
     },
     {
       path: '/signup',
-      name: 'signup',
+      name: 'Signup',
       component: signup,
-      meta: {
-        guest: true
-      } 
     },
     {
       path: '/register',
       name: 'register',
       component: register,
-      meta: {
-        guest: true
-      } 
     },
     {
       path: '/overview',
       name: 'overview',
       component: () => import('./views/overview.vue'),
       meta: {
-        requiresAuth: true,
+        requiresAuth: true
       } 
     },
     {
@@ -72,30 +61,16 @@ let router = new Router({
 })
 
 
-router.beforeEach((to, from, next) => {
-  // to and from are both route objects. must call `next`.
-  if(to.matched.some(record => record.meta.requiresAuth)) {
-    if(localStorage.getItem('token') == null) {
-       next({
-          path: '/login',
-          params: {nextURL: to.fullPath}
-        })
-      }
-    }else {
-     //const user = JSON.parse(localStorage.getItem('userToken'))
-     /*  if (to.matched.some(record => record.meta.is_admin)) {      
-        if (user.is_admin == 1 ) {
-          next()
-        }
-        else { 
-          next({ 
-            path:'/overview' 
-          })
-        }
-      } else { */
-        next()
-      //}
+/* router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
     }
-  })
+    next('/login')
+  } else {
+    next()
+  }
+}) */
 
   export default router

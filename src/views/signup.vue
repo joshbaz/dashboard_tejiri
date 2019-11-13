@@ -2,7 +2,7 @@
 <div class="main">
   <Header></Header>
     <div class="form">
-      <v-form ref="registerForm">
+      <v-form ref="registerForm" @submit.prevent="register">
         <h1 class="ma-3" >Sign up to Dashboard</h1>
         <div>
           <v-text-field
@@ -10,7 +10,10 @@
           type="text" 
           outlined 
           dense 
-          placeholder="Firstname"
+          label="Firstname"
+          data-vv-name="fname"
+          v-validate="'required|max:100'"
+          :error-messages="errors.collect('fname')"
           ></v-text-field>
         </div>
          <div>
@@ -20,6 +23,9 @@
           outlined 
           dense 
           placeholder="Lastname"
+          data-vv-name="lname"
+          v-validate="'required|max:100'"
+          :error-messages="errors.collect('lname')"
           ></v-text-field>
         </div>
         <div>
@@ -30,6 +36,9 @@
           dense 
           placeholder="you@domain.com"
           required
+          v-validate="'required|email'"
+          data-vv-name="email"
+          :error-messages="errors.collect('email')"
           ></v-text-field>
         </div>
         <div>
@@ -40,6 +49,9 @@
           dense 
           placeholder="password"
           required
+           data-vv-name="password"
+          v-validate="'required|max:8'"
+          :error-messages="errors.collect('password')"
           ></v-text-field>
         </div>
         <div>
@@ -53,69 +65,81 @@
           ></v-text-field>
         </div>
         <div>
-          <v-btn depressed class="btn" @click="submit">Continue</v-btn>
+          <v-btn depressed class="btn" type="submit">Continue</v-btn>
         </div>
       </v-form>
     </div>
-  <Footer></Footer>
+  <Footer/>
 </div>
   
 </template>
 
 <script>
+
 import Header from '../components/header.vue'
 import Footer from '../components/footer1.vue'
-import axios from 'axios'
-let BASE_URL = 'http://localhost:4000'
 
 export default {
+    $_veeValidate: {
+      validator: 'new',
+    },
+    
+  // Handling Authentification with vuex
   props : ['nextURL'],
   components: {
     Header,
     Footer
   },
-
+// 
   data: () => ({
      fname:'',
      lname:'',
      email:'',
      password:'',
      confirmPassword:'',
-     dialog: false,
+     dictionary: {
+        attributes: {
+          email: 'E-mail Address',
+          // custom attributes
+        },
+        custom: {
+          fname: {
+            required: () => 'Firstname can not be empty',
+            max: 'The name field may not be greater than 100 characters',
+            // custom messages
+          },
+           lname: {
+            required: () => 'Lastname can not be empty',
+            max: 'The name field may not be greater than 100 characters',
+            // custom messages
+          },
+           password: {
+            required: () => 'Password can not be empty',
+            max: 'This field may not be greater than 10 characters',
+            // custom messages
+          },
+        },
+      }
   }),
-
+  
+  mounted () {
+      this.$validator.localize('en', this.dictionary)
+  },
  methods: {
-   submit() {
+   /* eslint-disable */
+   register: function() {
 
-if( this.password === this.confirmPassword){
-   axios.post(BASE_URL + '/users/register', {
-         firstname: this.fname,
-         lastname: this.lname,
-         email: this.email,
-         password: this.password
-      }).then (res => {
-        this.$router.push('/register')  
-        /*    localStorage.setItem('userToken', JSON.stringify(res.data.userToken))
-         localStorage.setItem('token', res.data.token)
-
-        if (localStorage.getItem('token') != null) {
-         this.$emit('login')
-            if(this.$route.params.nextURL != null){
-              this.$router.push(this.$route.params.nextURL)
-           } else{
-            this.$router.push('/register')  
-           }
-       } */
-      
-      }).catch(err => {
-        console.log("Not posted")
-        console.log(err)
-      })
-    }  else {
-      // Replace with v-dialog or v-snackbar
-      return alert("Yo! Wrong password")
-     }
-   }
+     let data = {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+      };
+      this.$store
+        .dispatch("register", data)
+        .then(() => {this.$router.push("/register")})
+        .catch(err => {console.log(err)});
+      this.$validator.validateAll()
+    }
   }
 }
 </script>

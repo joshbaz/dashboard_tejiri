@@ -1,4 +1,8 @@
-# vue-vuetify-template
+# Tejiri Dashboard
+
+![Website](https://img.shields.io/website?up_color=green&up_message=online&url=https%3A%2F%2Ftejiri-dashboard.now.sh)
+
+https://img.shields.io/github/last-commit/joshbaz/dashboard_tejiri
 
 ## Project setup
 ```

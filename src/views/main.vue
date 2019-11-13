@@ -10,18 +10,9 @@
             <p>Email</p>
           </v-btn>
         </div>
-        
-        <!-- <div class="item">
-          <v-btn depressed class="btn btn2">
-            <v-icon class="pr-3">mdi-google</v-icon>
-            Google
-          </v-btn>
-        </div> -->
       </v-form>
     </div>
-      
 
-  
   <Footer></Footer>
   
 </div>
@@ -31,7 +22,9 @@
 <script>
 import Header from '../components/header.vue'
 import Footer from '../components/footer.vue'
+
 export default {
+  name:"Main Page",
   components: {
     Header,
     Footer
