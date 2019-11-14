@@ -1,9 +1,13 @@
 import Vue from 'vue'
+import VeeValidate from 'vee-validate';
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
-import router from './router'
 import '@babel/polyfill'
+
 import store from './store'
+import { router } from './helpers';
+
+Vue.use(VeeValidate);
 
 Vue.config.productionTip = false
 

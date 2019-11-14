@@ -6,7 +6,7 @@
               <h1 class="ma-3">Your Account Created</h1>
               <p class="text-center">You may proceed to the dashboard</p>
               <div class="btn">
-                  <v-btn depressed dense class="btn">Go to Dashboard</v-btn>
+                  <v-btn to="/overview" depressed dense class="btn">Go to Dashboard</v-btn>
               </div>
             </v-form>
         </div>
@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import Header from '../components/header3.vue'
-import Footer from '../components/footer1.vue' 
+import Header from '../../components/header3.vue'
+import Footer from '../../components/footer1.vue' 
 export default {
     components: {
         Header,
