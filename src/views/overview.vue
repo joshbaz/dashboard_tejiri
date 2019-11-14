@@ -21,7 +21,7 @@
         <v-card max-width="300"  class="flexed" outlined>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title class="headline mb-1">{{ webname }}</v-list-item-title>
+              <v-list-item-title class="headline mb-1">Tejiri Productions</v-list-item-title>
               <v-list-item-title class="text-center">Status</v-list-item-title>
               <v-list-tile-sub-title class="font-italic"><v-icon color="#64DD17">mdi-circle</v-icon>Online</v-list-tile-sub-title>
             </v-list-item-content>
